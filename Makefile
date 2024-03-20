@@ -17,3 +17,7 @@ test:
 docker-build:
 	docker build -t fair-router .
 
+
+.PHONY: docker-test
+docker-test: docker-build
+	docker run -it fair-router /bin/router-test

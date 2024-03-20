@@ -14,10 +14,13 @@ RUN CGO_ENABLED=0 go build \
     -ldflags="-extldflags=-static" \
     -o ./dist/worker ./cmd/worker
 
+RUN CGO_ENABLED=0 go test \
+    -ldflags="-extldflags=-static" \
+    -c -o ./dist/router-test ./internal/tests
+
 FROM alpine:3.16 as alpine
 COPY --from=build /src/dist/router /bin/router
 COPY --from=build /src/dist/worker /bin/worker
-COPY ./hack/update-ca.sh /update-ca.sh
+COPY --from=build /src/dist/router-test /bin/router-test
 
-FROM alpine:3.12
 EXPOSE 8080
