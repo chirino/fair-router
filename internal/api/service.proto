@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+option go_package = "github.com/chirino/fair-router/internal/api;api";
+
+message MetricsRequest  {
+  string router = 1;
+}
+
+message MetricsResponse  {
+  optional int32 capacity = 1;
+  optional int32 remaining = 2;
+}
+
+service MetricsService {
+  rpc Monitor(MetricsRequest) returns (stream MetricsResponse) {}
+}
